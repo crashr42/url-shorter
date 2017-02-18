@@ -15,6 +15,6 @@ use UrlShorter\LongUrlRepository;
 
 $repository = new LongUrlRepository(PdoMysqlDriver::fromArrayConfig($config['db']));
 
-$app = new App(new LongUrlController($repository));
+$app = new App(__DIR__, new LongUrlController($repository));
 
 $app->dispatch(new HttpRequest($_SERVER, $_GET));

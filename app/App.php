@@ -24,13 +24,19 @@ class App
      * @var LongUrlController
      */
     private $controller;
+    /**
+     * @var string
+     */
+    private $root;
 
     /**
      * App constructor.
+     * @param string $root
      * @param LongUrlController $controller
      */
-    public function __construct(LongUrlController $controller)
+    public function __construct($root, LongUrlController $controller)
     {
+        $this->root       = $root;
         $this->controller = $controller;
     }
 
@@ -42,6 +48,21 @@ class App
      */
     public function dispatch(HttpRequest $httpRequest)
     {
+        $staticFile = $this->root.'/static/'.$httpRequest->urlPath();
+        if (file_exists($staticFile) && is_file($staticFile)) {
+            switch (pathinfo($staticFile, PATHINFO_EXTENSION)) {
+                case 'css':
+                    header('Content-Type: text/css');
+                    break;
+                case 'js':
+                    header('Content-Type: application/javascript');
+                    break;
+            }
+
+            echo file_get_contents($staticFile);
+            return;
+        }
+
         $appRequest = $this->makeAppRequest($httpRequest);
 
         $actionName = $appRequest->actionName();
