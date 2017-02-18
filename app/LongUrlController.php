@@ -56,7 +56,7 @@ class LongUrlController
     public function hash(HttpRequest $request)
     {
         $longUrl = $request->param('long_url');
-        if ($longUrl === null) {
+        if (!UrlHasher::urlIsValid($longUrl)) {
             throw new HttpException(422);
         }
 
@@ -82,7 +82,7 @@ class LongUrlController
             return $this->index($request);
         }
 
-        if (!UrlHasher::validate($request->urlPath())) {
+        if (!UrlHasher::hashIsValid($request->urlPath())) {
             throw new HttpException(422);
         }
 

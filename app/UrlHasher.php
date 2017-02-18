@@ -23,8 +23,13 @@ class UrlHasher
         return trim(preg_replace('/[^a-zA-Z0-9]+/', '', $hash));
     }
 
-    public static function validate($hash)
+    public static function hashIsValid($hash)
     {
         return strlen(static::filter($hash)) === 6;
+    }
+
+    public static function urlIsValid($url)
+    {
+        return is_string($url) && strlen($url) <= 2000;
     }
 }
