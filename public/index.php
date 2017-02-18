@@ -9,12 +9,14 @@ $config = require __DIR__.'/../config/base.php';
 
 use UrlShorter\App;
 use UrlShorter\Libs\Database\PdoMysqlDriver;
+use UrlShorter\Libs\Logger;
 use UrlShorter\LongUrlController;
 use UrlShorter\Libs\Http\HttpRequest;
 use UrlShorter\LongUrlRepository;
 
 $repository = new LongUrlRepository(PdoMysqlDriver::fromArrayConfig($config['db']));
 
-$app = new App(__DIR__, new LongUrlController($repository));
+$logger = new Logger(__DIR__.'/../logs/debug.log');
+$app    = new App(__DIR__, new LongUrlController($repository), $logger);
 
 $app->dispatch(new HttpRequest($_SERVER, $_GET));

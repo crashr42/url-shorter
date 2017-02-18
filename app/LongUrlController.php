@@ -96,7 +96,7 @@ class LongUrlController implements ControllerInterface
             throw new HttpException(404);
         }
 
-        return new HttpResponse(sprintf('Redirect to: %s', $longUrl), 302, [
+        return new HttpResponse(sprintf('Redirect to: %s', $longUrl), 301, [
             'Location'      => $longUrl,
             'Cache-Control' => 'no-cache, no-store, max-age=0, must-revalidate',
             'Expires'       => 'Mon, 01 Jan 1990 00:00:00 GMT',

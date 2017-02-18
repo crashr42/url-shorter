@@ -12,6 +12,7 @@ namespace UrlShorter\tests\libs;
 use UrlShorter\App;
 use UrlShorter\Libs\ControllerInterface;
 use UrlShorter\Libs\Http\HttpRequest;
+use UrlShorter\Libs\Logger;
 
 class AppRequestTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,10 +25,7 @@ class AppRequestTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        /** @var ControllerInterface $ctrl */
-        $ctrl = $this->createMock(ControllerInterface::class);
-
-        $this->app = new App(__DIR__, $ctrl);
+        $this->app = new App(__DIR__, $this->createMock(ControllerInterface::class), $this->createMock(Logger::class));
     }
 
     /**

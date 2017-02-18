@@ -29,16 +29,22 @@ class App
      * @var string
      */
     private $root;
+    /**
+     * @var Logger
+     */
+    private $logger;
 
     /**
      * App constructor.
      * @param string $root
      * @param ControllerInterface $controller
+     * @param Logger $logger
      */
-    public function __construct($root, ControllerInterface $controller)
+    public function __construct($root, ControllerInterface $controller, Logger $logger)
     {
         $this->root       = $root;
         $this->controller = $controller;
+        $this->logger     = $logger;
     }
 
     /**
@@ -61,6 +67,7 @@ class App
             }
 
             echo file_get_contents($staticFile);
+
             return;
         }
 
@@ -101,12 +108,14 @@ class App
             ob_get_clean();
 
             header(sprintf('HTTP/1.0 %d %s', $e->getCode(), $e->getMessage()));
+
+            $this->logger->debug($e->getMessage());
         } catch (Exception $e) {
             ob_get_clean();
 
             header('HTTP/1.0 500 Internal server error');
 
-            Logger::debug($e->getMessage());
+            $this->logger->debug($e->getMessage());
         }
     }
 

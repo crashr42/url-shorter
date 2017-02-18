@@ -41,8 +41,39 @@ function value($value)
     return is_callable($value) ? $value() : $value;
 }
 
+/**
+ * Print debug and stop application.
+ */
 function dd()
 {
+    /** @noinspection ForgottenDebugOutputInspection */
     var_dump(func_get_args());
     exit;
+}
+
+/**
+ * Convert given value to null.
+ *
+ * @param mixed $value
+ * @return null|mixed
+ */
+function nullify($value)
+{
+    if (is_string($value) && trim($value) === '') {
+        return null;
+    }
+
+    return $value;
+}
+
+/**
+ * Check string starts with prefix.
+ *
+ * @param string $value
+ * @param string $prefix
+ * @return bool
+ */
+function starts_with($value, $prefix)
+{
+    return strpos($value, $prefix) === 0;
 }
