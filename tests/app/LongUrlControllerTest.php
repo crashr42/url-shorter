@@ -94,12 +94,15 @@ class LongUrlControllerTest extends \PHPUnit_Framework_TestCase
     {
         $this->rep->expects(static::once())->method('save')->with('http://zzz.aaa', static::matchesRegularExpression('/[a-zA-Z0-9]{6,6}/'));
 
-        $response = $this->ctrl->hash(new HttpRequest([], [
+        $response = $this->ctrl->hash(new HttpRequest([
+            'SERVER_PROTOCOL' => 'HTTPS',
+            'HTTP_HOST'       => 'localhost',
+        ], [
             'long_url' => 'http://zzz.aaa',
         ]));
 
         static::assertInstanceOf(JsonHttpResponse::class, $response);
-        static::assertRegExp('{"url": "http://localhost:8000/[a-zA-Z0-9]{6,6}"}', $response->getBody());
+        static::assertRegExp('{"url": "https://localhost/[a-zA-Z0-9]{6,6}"}', $response->getBody());
         static::assertArraySubset([
             'Content-Type' => 'application/json',
         ], $response->getHeaders());

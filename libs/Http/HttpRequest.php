@@ -80,7 +80,7 @@ class HttpRequest
     public function serverHost()
     {
         $protocol = 'http';
-        if (strpos($this->server['SERVER_PROTOCOL'], 'https') !== false) {
+        if (stripos($this->server['SERVER_PROTOCOL'], 'https') !== false) {
             $protocol = 'https';
         }
 
