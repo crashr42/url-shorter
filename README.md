@@ -22,6 +22,9 @@ composer install --no-dev
 ```
 
 ## Create database
+
+Project use Mysql. Please install server on you OS and create database and user with commands:
+
 ```
 mysql> create database url_shorter;
 mysql> grant all privileges on url_shorter.* to 'demo'@'%' identified by 'demo';
