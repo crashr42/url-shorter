@@ -17,12 +17,12 @@ class UrlHasher
 
     public static function hash($url)
     {
-        $out = system('dd if=/dev/urandom ibs=1 skip=0 count=3 status=none | xxd -l 16 -p', $code);
-        if ($code !== 0 || \UrlShorter\Libs\nullify($out) === null) {
+        $out = system('dd if=/dev/urandom ibs=1 skip=0 count=3 status=none', $code);
+        if ($code !== 0 || \UrlShorter\Libs\nullify($out) === null || !static::hashIsValid(bin2hex($out))) {
             return bin2hex(Random::bytes(3));
         }
 
-        return $out;
+        return bin2hex($out);
     }
 
     public static function filter($hash)
