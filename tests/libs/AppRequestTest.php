@@ -25,7 +25,7 @@ class AppRequestTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->app = new App(__DIR__, $this->createMock(ControllerInterface::class), $this->createMock(Logger::class));
+        $this->app = new App(['debug' => true], __DIR__, $this->createMock(ControllerInterface::class), $this->createMock(Logger::class));
     }
 
     /**

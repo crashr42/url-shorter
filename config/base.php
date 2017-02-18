@@ -1,7 +1,8 @@
 <?php
 
 return [
-    'db' => [
+    'debug' => true,
+    'db'    => [
         'database' => 'url_shorter',
         'host'     => 'localhost',
         'user'     => 'demo',

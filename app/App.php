@@ -33,18 +33,31 @@ class App
      * @var Logger
      */
     private $logger;
+    /**
+     * @var array
+     */
+    private $config;
 
     /**
      * App constructor.
+     * @param array $config
      * @param string $root
      * @param ControllerInterface $controller
      * @param Logger $logger
      */
-    public function __construct($root, ControllerInterface $controller, Logger $logger)
+    public function __construct($config, $root, ControllerInterface $controller, Logger $logger)
     {
         $this->root       = $root;
         $this->controller = $controller;
         $this->logger     = $logger;
+        $this->config     = $config;
+
+        if ($config['debug']) {
+            ini_set('display_errors', 1);
+            error_reporting(E_ALL);
+        } else {
+            ini_set('display_errors', 0);
+        }
     }
 
     /**
