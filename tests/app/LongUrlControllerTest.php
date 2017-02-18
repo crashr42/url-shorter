@@ -10,6 +10,7 @@
 namespace UrlShorter\tests\app;
 
 use UrlShorter\Libs\Http\HttpRequest;
+use UrlShorter\Libs\Http\HttpResponse;
 use UrlShorter\Libs\Http\JsonHttpResponse;
 use UrlShorter\LongUrlController;
 use UrlShorter\LongUrlRepository;
@@ -101,6 +102,47 @@ class LongUrlControllerTest extends \PHPUnit_Framework_TestCase
         static::assertRegExp('{"url": "http://localhost:8000/[a-zA-Z0-9]{6,6}"}', $response->getBody());
         static::assertArraySubset([
             'Content-Type' => 'application/json',
+        ], $response->getHeaders());
+    }
+
+    public function testRootWithoutHash()
+    {
+        $this->ctrl->root(new HttpRequest(['SCRIPT_NAME' => '/']));
+
+        $this->testIndex();
+    }
+
+    /**
+     * @expectedException \UrlShorter\Libs\Http\HttpException
+     * @expectedExceptionMessage Unprocessable Entity
+     * @expectedExceptionCode 422
+     */
+    public function testRootWithInvalidHash()
+    {
+        $this->ctrl->root(new HttpRequest(['SCRIPT_NAME' => '/aa']));
+    }
+
+    /**
+     * @expectedException \UrlShorter\Libs\Http\HttpException
+     * @expectedExceptionMessage Not found
+     * @expectedExceptionCode 404
+     */
+    public function testRootWithNotExistsHash()
+    {
+        $this->ctrl->root(new HttpRequest(['SCRIPT_NAME' => '/aabbcc']));
+    }
+
+    public function testRootWithExistsHash()
+    {
+        $this->rep->method('find')->willReturn('test_url');
+
+        $response = $this->ctrl->root(new HttpRequest(['SCRIPT_NAME' => '/aabbcc']));
+
+        static::assertInstanceOf(HttpResponse::class, $response);
+        static::assertEquals('Redirect to: test_url', $response->getBody());
+        static::assertEquals(301, $response->getCode());
+        static::assertArraySubset([
+            'Location' => 'test_url',
         ], $response->getHeaders());
     }
 }
