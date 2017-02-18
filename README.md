@@ -13,6 +13,14 @@ Modules:
 - json
 - openssl
 
+## Composer
+
+Project hasn't external dependencies in production mode. But composer used for autoloading classes.
+
+```
+composer install --no-dev
+```
+
 ## Create database
 ```
 mysql> create database url_shorter;
@@ -35,4 +43,18 @@ CREATE TABLE `urls` (
 
 ```
 php -S localhost:8000 public/index.php 
+```
+
+# Testing 
+
+Install PHPUnit:
+
+```
+composer install
+```
+
+Run tests:
+
+```
+vendor/bin/phpunit tests/
 ```
