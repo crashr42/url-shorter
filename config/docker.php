@@ -4,9 +4,9 @@ return [
     'debug' => true,
     'db'    => [
         'database' => 'url_shorter',
-        'host'     => 'localhost',
-        'user'     => 'demo',
-        'password' => 'demo',
+        'host'     => 'url-shorter-db',
+        'user'     => 'root',
+        'password' => 'qwe123',
         'charset'  => 'utf-8',
         'strict'   => true,
     ],

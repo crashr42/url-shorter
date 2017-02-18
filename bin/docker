@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+docker stop url-shorter-db
+docker rm url-shorter-db
+docker run --name url-shorter-db -e MYSQL_ROOT_PASSWORD=qwe123 -d mariadb
+
+docker stop url-shorter
+docker rm url-shorter
+docker build -t=url-shorter --rm=true .
+docker run --link url-shorter-db --cpus=".8" -it -d --name url-shorter -p 8999:8000 url-shorter
+
+sleep 5
+
+docker exec -it url-shorter-db bash -c "mysql -uroot -pqwe123 -e '`cat sql/migrations.sql`'"
+
+echo "Listen http://localhost:8999"

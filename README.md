@@ -39,13 +39,15 @@ CREATE TABLE `urls` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `urls_hash_uindex` (`hash`)
-) ENGINE=InnoDB AUTO_INCREMENT=265 DEFAULT CHARSET=latin1
+) ENGINE=InnoDB AUTO_INCREMENT=265 DEFAULT CHARSET=utf8_general_ci
 ```
 
 # Start server
 
+Server listen http://localhost:8998.
+
 ```
-php -S localhost:8000 public/index.php 
+bin/run 
 ```
 
 # Testing 
@@ -60,4 +62,12 @@ Run tests:
 
 ```
 vendor/bin/phpunit tests/
+```
+
+# Docker
+
+Run with docker on Server listen http://localhost:8998:
+
+```
+bin/docker
 ```
