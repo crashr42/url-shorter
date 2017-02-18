@@ -38,8 +38,8 @@
 
                 page.result.innerHTML = '';
                 page.result.appendChild(shortA);
-            }, function (response) {
-                alert(response);
+            }, function () {
+                alert('Url invalid!');
             });
 
             return false;
