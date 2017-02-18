@@ -11,6 +11,7 @@ namespace UrlShorter;
 
 use Exception;
 use UrlShorter\Libs\AppRequest;
+use UrlShorter\Libs\ControllerInterface;
 use UrlShorter\Libs\Http\HttpException;
 use UrlShorter\Libs\Http\HttpRequest;
 use UrlShorter\Libs\Http\HttpResponse;
@@ -32,9 +33,9 @@ class App
     /**
      * App constructor.
      * @param string $root
-     * @param LongUrlController $controller
+     * @param ControllerInterface $controller
      */
-    public function __construct($root, LongUrlController $controller)
+    public function __construct($root, ControllerInterface $controller)
     {
         $this->root       = $root;
         $this->controller = $controller;

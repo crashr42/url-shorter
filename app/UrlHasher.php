@@ -13,6 +13,8 @@ use UrlShorter\Libs\Random;
 
 class UrlHasher
 {
+    const MAX_URL_LENGTH = 2000;
+
     public static function hash($url)
     {
         return bin2hex(Random::bytes(3));
@@ -30,6 +32,6 @@ class UrlHasher
 
     public static function urlIsValid($url)
     {
-        return is_string($url) && strlen($url) <= 2000;
+        return is_string($url) && strlen($url) <= static::MAX_URL_LENGTH && strlen(trim($url)) > 0;
     }
 }

@@ -9,6 +9,8 @@
 
 namespace UrlShorter\Libs;
 
+use RuntimeException;
+
 class Template
 {
     /**
@@ -36,9 +38,14 @@ class Template
      * Render template.
      *
      * @return string
+     * @throws RuntimeException
      */
     public function render()
     {
+        if (!file_exists($this->path) || !is_file($this->path)) {
+            throw new RuntimeException("Template {$this->path} not found.");
+        }
+
         ob_start();
 
         /** @noinspection PhpIncludeInspection */
@@ -52,12 +59,12 @@ class Template
      *
      * @param string $name
      * @return mixed
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function __get($name)
     {
         return array_get($this->variables, $name, function () use ($name) {
-            throw new \RuntimeException("Variable {$name} not exists in view {$this->path}.");
+            throw new RuntimeException("Variable {$name} not exists in view {$this->path}.");
         });
     }
 }

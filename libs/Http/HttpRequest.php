@@ -26,7 +26,7 @@ class HttpRequest
      * @param $server
      * @param $query
      */
-    public function __construct($server, array $query = [])
+    public function __construct(array $server = [], array $query = [])
     {
         $this->server = $server;
         $this->query  = $query;

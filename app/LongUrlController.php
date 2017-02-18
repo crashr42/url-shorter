@@ -9,13 +9,14 @@
 
 namespace UrlShorter;
 
+use UrlShorter\Libs\ControllerInterface;
 use UrlShorter\Libs\Http\HttpException;
 use UrlShorter\Libs\Http\HttpRequest;
 use UrlShorter\Libs\Http\HttpResponse;
 use UrlShorter\Libs\Http\JsonHttpResponse;
 use UrlShorter\Libs\Template;
 
-class LongUrlController
+class LongUrlController implements ControllerInterface
 {
     /**
      * @var LongUrlRepository
@@ -36,6 +37,7 @@ class LongUrlController
      *
      * @param HttpRequest $request
      * @return string
+     * @throws \RuntimeException
      */
     public function index(HttpRequest $request)
     {
@@ -50,7 +52,7 @@ class LongUrlController
      * Generate short url for long url and store it.
      *
      * @param HttpRequest $request
-     * @return string
+     * @return string|JsonHttpResponse
      * @throws HttpException
      */
     public function hash(HttpRequest $request)
