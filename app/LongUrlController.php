@@ -63,7 +63,7 @@ class LongUrlController
             throw new HttpException(422);
         }
 
-        $hash = UrlHasher::validate($request->urlPath());
+        $hash = UrlHasher::filter($request->urlPath());
 
         $longUrl = $this->repository->find($hash);
 

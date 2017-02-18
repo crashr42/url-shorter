@@ -10,6 +10,7 @@
 namespace UrlShorter\Libs\Database;
 
 use PDO;
+use PDOStatement;
 
 class PdoMysqlDriver implements DbDriverInterface
 {
@@ -83,37 +84,6 @@ class PdoMysqlDriver implements DbDriverInterface
     }
 
     /**
-     * Insert one row to table. Return inserted rows count.
-     *
-     * @param string $table
-     * @param array $row
-     * @return int
-     * @throws DbException
-     */
-    public function insert($table, $row)
-    {
-        $columns = array_keys($row);
-
-        $placeholders = array_map(function ($column) {
-            return ":{$column}";
-        }, $columns);
-
-        $query = sprintf('INSERT INTO %s (%s) VALUES (%s)', $table, implode(', ', $columns), implode(', ', $placeholders));
-
-        $statement = $this->connection()->prepare($query);
-        foreach ($row as $column => $value) {
-            $statement->bindValue(":{$column}", $value);
-        }
-        if (!$statement->execute()) {
-            $errorInfo = $statement->errorInfo();
-
-            throw new DbException(sprintf('%s: %s', $errorInfo[1], $errorInfo[2]), $errorInfo[0]);
-        }
-
-        return $statement->rowCount();
-    }
-
-    /**
      * Initialize mysql connection.
      *
      * @return PDO
@@ -138,14 +108,65 @@ class PdoMysqlDriver implements DbDriverInterface
     }
 
     /**
+     * Execute pdo statement.
+     *
+     * @param PDOStatement $statement
+     * @throws DbException
+     */
+    protected function executeStatement(PDOStatement $statement)
+    {
+        if (!$statement->execute()) {
+            $errorInfo = $statement->errorInfo();
+
+            throw new DbException(sprintf('%s: %s', $errorInfo[1], $errorInfo[2]), $errorInfo[0]);
+        }
+    }
+
+    /**
+     * Insert one row to table. Return inserted rows count.
+     *
+     * @param string $table
+     * @param array $row
+     * @return int
+     * @throws DbException
+     */
+    public function insert($table, $row)
+    {
+        $columns = array_keys($row);
+
+        $placeholders = array_map(function ($column) {
+            return ":{$column}";
+        }, $columns);
+
+        $query = sprintf('INSERT INTO %s (%s) VALUES (%s)', $table, implode(', ', $columns), implode(', ', $placeholders));
+
+        $statement = $this->connection()->prepare($query);
+        foreach ($row as $column => $value) {
+            $statement->bindValue(":{$column}", $value);
+        }
+        $this->executeStatement($statement);
+
+        return $statement->rowCount();
+    }
+
+    /**
      * Select one row from database.
      *
      * @param string $query
      * @param array $params
      * @return array
+     * @throws \UrlShorter\Libs\Database\DbException
      */
     public function selectRow($query, $params)
     {
-        // TODO: Implement selectRow() method.
+        $statement = $this->connection()->prepare($query);
+
+        foreach ($params as $column => $value) {
+            $statement->bindValue(":{$column}", $value);
+        }
+
+        $this->executeStatement($statement);
+
+        return $statement->fetch();
     }
 }
