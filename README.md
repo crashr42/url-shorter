@@ -4,6 +4,15 @@ Small application for implement url shorter service.
 
 # Installation
 
+## PHP
+
+Version should be >= 5.6.
+
+Modules:
+- pdo_mysql
+- json
+- openssl
+
 ## Create database
 ```
 mysql> create database url_shorter;
