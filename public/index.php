@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set('UTC');
+
 require __DIR__.'/../vendor/autoload.php';
 
 $config = require __DIR__.'/../config/base.php';
