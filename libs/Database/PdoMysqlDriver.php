@@ -92,15 +92,17 @@ class PdoMysqlDriver implements DbDriverInterface
      */
     public function insert($table, $row)
     {
-        $columns = array_map(function ($column) {
-            return ":{$column}";
-        }, array_keys($row));
+        $columns = array_keys($row);
 
-        $query = sprintf('INSERT INTO %s VALUES (%s)', $table, implode(', ', $columns));
+        $placeholders = array_map(function ($column) {
+            return ":{$column}";
+        }, $columns);
+
+        $query = sprintf('INSERT INTO %s (%s) VALUES (%s)', $table, implode(', ', $columns), implode(', ', $placeholders));
 
         $statement = $this->connection()->prepare($query);
         foreach ($row as $column => $value) {
-            $statement->bindParam(":{$column}", $value);
+            $statement->bindValue(":{$column}", $value);
         }
         if (!$statement->execute()) {
             $errorInfo = $statement->errorInfo();
@@ -119,9 +121,9 @@ class PdoMysqlDriver implements DbDriverInterface
     protected function connection()
     {
         if ($this->connection === null) {
-            $connection = new PDO(sprintf('mysql:host=%s;dbname=%s', $this->host, $this->database), $this->user, $this->password, [
-                PDO::MYSQL_ATTR_INIT_COMMAND => sprintf('SET NAMES %s', $this->charset),
-            ]);
+            $connection = new PDO(sprintf('mysql:host=%s;dbname=%s', $this->host, $this->database), $this->user, $this->password);
+
+            $connection->prepare(sprintf('SET NAMES %s', $this->charset))->execute();
 
             if ($this->strict) {
                 $connection->prepare("set session sql_mode='STRICT_ALL_TABLES'")->execute();

@@ -14,6 +14,7 @@ use UrlShorter\Libs\AppRequest;
 use UrlShorter\Libs\Http\HttpException;
 use UrlShorter\Libs\Http\HttpRequest;
 use UrlShorter\Libs\Http\HttpResponse;
+use UrlShorter\Libs\Logger;
 
 class App
 {
@@ -81,7 +82,9 @@ class App
         } catch (Exception $e) {
             ob_get_clean();
 
-            header(sprintf('HTTP/1.0 %d %s', $e->getCode(), $e->getMessage()));
+            header('HTTP/1.0 500 Internal server error');
+
+            Logger::debug($e->getMessage());
         }
     }
 
