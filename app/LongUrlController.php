@@ -13,6 +13,7 @@ use UrlShorter\Libs\Http\HttpException;
 use UrlShorter\Libs\Http\HttpRequest;
 use UrlShorter\Libs\Http\HttpResponse;
 use UrlShorter\Libs\Http\JsonHttpResponse;
+use UrlShorter\Libs\Template;
 
 class LongUrlController
 {
@@ -28,6 +29,21 @@ class LongUrlController
     public function __construct(LongUrlRepository $repository)
     {
         $this->repository = $repository;
+    }
+
+    /**
+     * User friendly page for generate short urls.
+     *
+     * @param HttpRequest $request
+     * @return string
+     */
+    public function index(HttpRequest $request)
+    {
+        $tpl = new Template(__DIR__.'/views/index.view.php', [
+            'name' => $request->param('name')
+        ]);
+
+        return $tpl->render();
     }
 
     /**
@@ -62,6 +78,10 @@ class LongUrlController
      */
     public function root(HttpRequest $request)
     {
+        if ($request->urlPath() === '/') {
+            return $this->index($request);
+        }
+
         if (!UrlHasher::validate($request->urlPath())) {
             throw new HttpException(422);
         }
