@@ -12,6 +12,7 @@ namespace UrlShorter;
 use UrlShorter\Libs\Http\HttpException;
 use UrlShorter\Libs\Http\HttpRequest;
 use UrlShorter\Libs\Http\HttpResponse;
+use UrlShorter\Libs\Http\JsonHttpResponse;
 
 class LongUrlController
 {
@@ -47,7 +48,9 @@ class LongUrlController
 
         $this->repository->save($longUrl, $hash);
 
-        return $hash;
+        return new JsonHttpResponse([
+            'url' => sprintf('http://localhost:8000/%s', $hash),
+        ]);
     }
 
     /**
