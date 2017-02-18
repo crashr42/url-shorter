@@ -26,20 +26,7 @@ composer install --no-dev
 Project use Mysql. Please install server on you OS and create database and user with commands:
 
 ```
-mysql> create database url_shorter;
-mysql> grant all privileges on url_shorter.* to 'demo'@'%' identified by 'demo';
-```
-
-## Create table
-```
-CREATE TABLE `urls` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `long_url` varchar(2000) NOT NULL,
-  `hash` varchar(6) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `urls_hash_uindex` (`hash`)
-) ENGINE=InnoDB AUTO_INCREMENT=265 DEFAULT CHARSET=utf8_general_ci
+mysql -u... -p... -e '`cat sql/migrations.sql`'
 ```
 
 # Start server
