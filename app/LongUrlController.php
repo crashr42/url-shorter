@@ -10,6 +10,7 @@
 namespace UrlShorter;
 
 use UrlShorter\Libs\ControllerInterface;
+use UrlShorter\Libs\FileUtils;
 use UrlShorter\Libs\Http\HttpException;
 use UrlShorter\Libs\Http\HttpRequest;
 use UrlShorter\Libs\Http\HttpResponse;
@@ -67,7 +68,7 @@ class LongUrlController implements ControllerInterface
         $this->repository->save($longUrl, $hash);
 
         return new JsonHttpResponse([
-            'url' => sprintf('http://localhost:8000/%s', $hash),
+            'url' => FileUtils::join($request->serverHost(), $hash),
         ]);
     }
 

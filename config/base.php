@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'url'   => 'http://localhost:8000/',
     'debug' => true,
     'db'    => [
         'database' => 'url_shorter',

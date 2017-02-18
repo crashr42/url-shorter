@@ -71,4 +71,19 @@ class HttpRequest
     {
         return $this->server('SCRIPT_NAME');
     }
+
+    /**
+     * Get server host.
+     *
+     * @return string
+     */
+    public function serverHost()
+    {
+        $protocol = 'http';
+        if (strpos($this->server['SERVER_PROTOCOL'], 'https') !== false) {
+            $protocol = 'https';
+        }
+
+        return sprintf('%s://%s', $protocol, $this->server['HTTP_HOST']);
+    }
 }
