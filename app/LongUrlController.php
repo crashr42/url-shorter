@@ -43,7 +43,7 @@ class LongUrlController implements ControllerInterface
     public function index(HttpRequest $request)
     {
         $tpl = new Template(__DIR__.'/views/index.view.php', [
-            'name' => $request->param('name')
+            'name' => $request->param('name'),
         ]);
 
         return $tpl->render();
@@ -64,6 +64,10 @@ class LongUrlController implements ControllerInterface
         }
 
         $hash = UrlHasher::hash($longUrl);
+
+        if (!UrlHasher::hashIsValid($hash)) {
+            throw new HttpException(422);
+        }
 
         $this->repository->save($longUrl, $hash);
 
