@@ -26,7 +26,7 @@
 
         page.form.onsubmit = function () {
             var action = page.form.getAttribute('action');
-            var url = action + '?long_url=' + encodeURIComponent(page.long_url.value);
+            var url = action + '?long_url=' + encodeURIComponent(decodeURIComponent(page.long_url.value));
 
             ajax(url, function (response) {
                 var obj = JSON.parse(response);
