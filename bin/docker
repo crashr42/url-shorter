@@ -9,7 +9,7 @@ docker rm url-shorter
 docker build -t=url-shorter --rm=true .
 docker run --link url-shorter-db --cpus=".8" -it -d --name url-shorter -p 8999:8000 url-shorter
 
-sleep 5
+sleep 10
 
 docker exec -it url-shorter-db bash -c "mysql -uroot -pqwe123 -e '`cat sql/migrations.sql`'"
 

@@ -2,7 +2,15 @@
 
 Small application for implement url shorter service.
 
-# Installation
+# Docker
+
+Run with docker on http://localhost:8999:
+
+```
+bin/docker
+```
+
+# Manual installation
 
 ## PHP
 
@@ -49,12 +57,4 @@ Run tests:
 
 ```
 vendor/bin/phpunit tests/
-```
-
-# Docker
-
-Run with docker on Server listen http://localhost:8998:
-
-```
-bin/docker
 ```
