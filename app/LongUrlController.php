@@ -42,9 +42,7 @@ class LongUrlController implements ControllerInterface
      */
     public function index(HttpRequest $request)
     {
-        $tpl = new Template(__DIR__.'/views/index.view.php', [
-            'name' => $request->param('name'),
-        ]);
+        $tpl = new Template(__DIR__.'/views/index.view.php');
 
         return $tpl->render();
     }

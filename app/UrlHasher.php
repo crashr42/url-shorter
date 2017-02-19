@@ -17,8 +17,8 @@ class UrlHasher
 
     public static function hash($url)
     {
-        $out = system('dd if=/dev/urandom ibs=1 skip=0 count=3 status=none', $code);
-        if ($code !== 0 || \UrlShorter\Libs\nullify($out) === null || !static::hashIsValid(bin2hex($out))) {
+        $out = shell_exec('dd if=/dev/urandom ibs=1 skip=0 count=3 status=none');
+        if (\UrlShorter\Libs\nullify($out) === null || !static::hashIsValid(bin2hex($out))) {
             return bin2hex(Random::bytes(3));
         }
 
