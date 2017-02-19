@@ -98,7 +98,7 @@ class LongUrlController implements ControllerInterface
         $longUrl = $this->repository->find($hash);
 
         if ($longUrl === null) {
-            throw new HttpException(404);
+            return new HttpResponse(sprintf('Short url %s not found!', $request->url()), 404);
         }
 
         return new HttpResponse(sprintf('Redirect to: %s', $longUrl), 301, [

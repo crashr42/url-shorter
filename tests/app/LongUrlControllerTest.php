@@ -125,14 +125,18 @@ class LongUrlControllerTest extends \PHPUnit_Framework_TestCase
         $this->ctrl->root(new HttpRequest(['SCRIPT_NAME' => '/aa']));
     }
 
-    /**
-     * @expectedException \UrlShorter\Libs\Http\HttpException
-     * @expectedExceptionMessage Not found
-     * @expectedExceptionCode 404
-     */
     public function testRootWithNotExistsHash()
     {
-        $this->ctrl->root(new HttpRequest(['SCRIPT_NAME' => '/aabbcc']));
+        $response = $this->ctrl->root(new HttpRequest([
+            'SCRIPT_NAME'     => '/aabbcc',
+            'REQUEST_URI'     => '/aabbcc',
+            'SERVER_PROTOCOL' => 'HTTPS',
+            'HTTP_HOST'       => 'localhost',
+        ]));
+
+        static::assertInstanceOf(HttpResponse::class, $response);
+        static::assertEquals('Short url https://localhost/aabbcc not found!', $response->getBody());
+        static::assertEquals(404, $response->getCode());
     }
 
     public function testRootWithExistsHash()

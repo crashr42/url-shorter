@@ -9,6 +9,8 @@
 
 namespace UrlShorter\Libs\Http;
 
+use UrlShorter\Libs\FileUtils;
+
 class HttpRequest
 {
     /**
@@ -85,5 +87,15 @@ class HttpRequest
         }
 
         return sprintf('%s://%s', $protocol, $this->server['HTTP_HOST']);
+    }
+
+    /**
+     * Get current request uri.
+     *
+     * @return array|string
+     */
+    public function url()
+    {
+        return FileUtils::join($this->serverHost(), $this->server('REQUEST_URI'));
     }
 }
